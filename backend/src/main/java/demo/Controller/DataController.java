@@ -70,5 +70,25 @@ public class DataController {
         return response.getBody();
     }
 
+    @GetMapping("/mythicPlusProfile")
+    public String getMythicPlusProfileData(@PathVariable String region, @PathVariable String realmSlug, @PathVariable String name) {
+        HttpEntity<String> entity = makeBaseHttpEntity(region);
+        String url = getBaseUrl(region, realmSlug, name) + "/mythic-keystone-profile" + getLocale();
+        ResponseEntity<String> response
+                = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+        return response.getBody();
+    }
+
+    /*Season 5 is the current ongoing season as of 16.04.2021*/
+    @GetMapping("/mythicPlusProfile/season/{seasonId}")
+    public String getMythicPlusSeasonData(@PathVariable String region, @PathVariable String realmSlug, @PathVariable String name,@PathVariable String seasonId) {
+        HttpEntity<String> entity = makeBaseHttpEntity(region);
+        String url = getBaseUrl(region, realmSlug, name) + "/mythic-keystone-profile/season/" + seasonId + getLocale();
+        ResponseEntity<String> response
+                = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+        System.out.println(response.getBody());
+        return response.getBody();
+    }
+
 
 }
