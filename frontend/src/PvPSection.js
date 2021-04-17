@@ -54,13 +54,14 @@ export default class PvPSection extends React.Component{
     render(){
         let urls = this.mapAllIdsToImages()
         let ratings = this.props.data.map( bracket => bracket.rating)
+        let statistics = this.props.data.map(bracket => bracket.seasonStatistics)
 
         return (
 
             <div className="pvpWrapper">
-                <PvPBracket imgUrl = {urls[0]} rating = {ratings[0]} name = '2v2'/>
-                <PvPBracket imgUrl = {urls[1]} rating = {ratings[1]} name = '3v3'/>
-                <PvPBracket imgUrl = {urls[2]} rating = {ratings[2]} name = 'Rated Battlegrounds'/>
+                <PvPBracket imgUrl = {urls[0]} rating = {ratings[0]} statistics = {statistics[0]} name = '2v2'/>
+                <PvPBracket imgUrl = {urls[1]} rating = {ratings[1]} statistics = {statistics[1]} name = '3v3'/>
+                <PvPBracket imgUrl = {urls[2]} rating = {ratings[2]} statistics = {statistics[2]} name = 'Rated Battlegrounds'/>
             </div>
         )
 
