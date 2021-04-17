@@ -1,0 +1,22 @@
+.pvpItem{
+    max-width: 400px;
+    width:200px;
+    text-align:center;
+    background-color: transparent;
+    border: 1px solid transparent;
+    margin-right: 10px;
+    margin-bottom: 1px;
+    float:left;
+}
+
+.pvpWrapper{
+    display: flex;
+    justify-content: space-between;
+    max-width: 1000px;
+    /*font-family: "Comic Sans MS", "Comic Sans", cursive;*/
+}
+
+.image{
+    width :200px;
+    height:200px;
+}
