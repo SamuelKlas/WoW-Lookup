@@ -90,5 +90,15 @@ public class DataController {
         return response.getBody();
     }
 
+    @GetMapping("/equipment")
+    public String getEquipmentData(@PathVariable String region,
+                             @PathVariable String realmSlug, @PathVariable String name) {
+        HttpEntity<String> entity = makeBaseHttpEntity(region);
+        String url = getBaseUrl(region, realmSlug, name) + "/equipment"  + getLocale();
+        ResponseEntity<String> response
+                = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+        return response.getBody();
+    }
+
 
 }

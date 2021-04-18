@@ -25,9 +25,4 @@ public class TokenHolder {
         this.created = created;
     }
 
-    @Override
-    public String toString(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        return "token " + this.token +" created on " + created.format(formatter);
-    }
 }
