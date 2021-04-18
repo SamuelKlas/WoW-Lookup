@@ -6,13 +6,9 @@ import Character from "./Character";
 import 'semantic-ui-css/semantic.min.css'
 
 
-
-
-
-
 ReactDOM.render(
     <div>
-        <Character baseUrl = "http://localhost:8080/backend/eu/outland/trillethree" />
+        <Character baseUrl = "http://localhost:8080/backend/eu/drakthul/tiyst" />
     </div>
 ,
   document.getElementById('root')

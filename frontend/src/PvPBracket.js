@@ -3,11 +3,7 @@ import './pvpItem.css'
 
 import "bootstrap/dist/css/bootstrap.css";
 
-import Button from "react-bootstrap/Button";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
-
-import { Image, Popup } from 'semantic-ui-react'
+import {Popup} from 'semantic-ui-react'
 
 const PopupContent = (props) => (
     <div>
@@ -20,16 +16,10 @@ const PopupContent = (props) => (
     </div>
 )
 
+
 export default class PvPBracket extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
-
-
     render() {
-        let statistics = this.props.statistics
         return (
 
         <div className="pvpItem">

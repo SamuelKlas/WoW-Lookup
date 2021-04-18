@@ -1,12 +1,14 @@
 import React from 'react';
 import './index.css';
 import PvPSection from "./PvPSection";
+import EquipmentItem from "./EquipmentItem";
 
 export default class Character extends React.Component{
     constructor(props){
         super(props)
         this.fetchDataDemo = this.fetchDataDemo.bind(this)
         this.fetchPvpData = this.fetchPvpData.bind(this)
+        this.fetchEquipmentData = this.fetchEquipmentData.bind(this)
         this.state = {loaded : false}
     }
 
@@ -30,15 +32,40 @@ export default class Character extends React.Component{
 
     async fetchRaidData(){
         let raidData = await (await fetch(this.props.baseUrl + '/encounters/raids')).json()
+        /*Shadowlands is the 9th expansion*/
         let sLandsRaids = raidData.expansions[8]
         let castleNathria = sLandsRaids.instances[0].modes
         console.log(castleNathria)
 
     }
 
+    async fetchEquipmentData(){
+        let equipData = await (await fetch(this.props.baseUrl + '/equipment')).json()
+        console.log(equipData)
+        let filteredData = equipData.equipped_items.map(item =>
+            ({
+                id : item.item.id,
+                level : item.level.value,
+                enchantments : item.enchantments !== undefined ? item.enchantments.map(ench => ench.enchantment_id) : [],
+                sockets : item.sockets !== undefined ? item.sockets.map(socket => socket.item.id) : []
+
+
+            }))
+        console.log(filteredData)
+        return filteredData
+
+    }
+
     async componentDidMount() {
         let filteredData = await this.fetchPvpData()
-        this.setState({pvpData : filteredData,loaded : true})
+        let equipData = await this.fetchEquipmentData()
+        console.log(equipData)
+        this.setState({
+                pvpData : filteredData,
+                loaded : true,
+                equipData : equipData
+        }
+            )
     }
 
     async fetchPvpData(){
@@ -61,10 +88,12 @@ export default class Character extends React.Component{
     }
 
     render(){
-        if(this.state.loaded == false) return "loading"
+        if(this.state.loaded === false) return "loading"
         return <div>
-            <button type="button" onClick={this.fetchDataDemo}>Fetch data</button>
+
+            <button type="button" onClick={this.fetchEquipmentData}>Fetch data</button>
             <button type="button" onClick={this.fetchPvpData}>pvp data</button>
+            {this.state.equipData.map(item =><EquipmentItem data = {item} /> )}
             <PvPSection data = {this.state.pvpData}/>
         </div>
     }

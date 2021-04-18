@@ -1,8 +1,6 @@
 import React from 'react';
 import PvPBracket from "./PvPBracket";
 import "bootstrap/dist/css/bootstrap.css";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
 
 
 export default class PvPSection extends React.Component{
@@ -14,7 +12,7 @@ export default class PvPSection extends React.Component{
         this.state = {}
     }
 
-    /*Handling nonsensical API endpoint, no idea how to better write this*/
+    /*Handling wonky API endpoint, no idea how to better write this*/
     mapPvPTierToIcon(bracket){
         let ret = "pvpTiers"
 
