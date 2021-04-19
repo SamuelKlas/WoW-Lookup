@@ -9,6 +9,7 @@ export default class Character extends React.Component{
         this.fetchDataDemo = this.fetchDataDemo.bind(this)
         this.fetchPvpData = this.fetchPvpData.bind(this)
         this.fetchEquipmentData = this.fetchEquipmentData.bind(this)
+
         this.state = {loaded : false}
     }
 
@@ -27,6 +28,7 @@ export default class Character extends React.Component{
             score : rioScore,
         }
 
+        console.log(filteredData)
         return filteredData;
     }
 
@@ -71,8 +73,9 @@ export default class Character extends React.Component{
     async fetchPvpData(){
         let pvp2v2Data = await (await fetch(this.props.baseUrl + '/pvp/2v2')).json()
         let pvp3v3Data = await (await fetch(this.props.baseUrl + '/pvp/3v3')).json()
+        let pvp3v3Dataresponse = await fetch(this.props.baseUrl + '/pvp/3v3')
         let pvpRbgData = await (await fetch(this.props.baseUrl + '/pvp/rbg')).json()
-        console.log(pvp2v2Data)
+        console.log(pvp3v3Dataresponse)
         let filteredData = Array.of(pvp2v2Data,pvp3v3Data,pvpRbgData).map(data =>
             ({
                 bracket : data.bracket.type,
@@ -92,7 +95,7 @@ export default class Character extends React.Component{
         return <div>
 
             <button type="button" onClick={this.fetchEquipmentData}>Fetch data</button>
-            <button type="button" onClick={this.fetchPvpData}>pvp data</button>
+            <button type="button" onClick={this.fetchMythicPlusData.bind(this)}>pvp data</button>
             {this.state.equipData.map(item =><EquipmentItem data = {item} /> )}
             <PvPSection data = {this.state.pvpData}/>
         </div>
