@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import demo.Model.ImageDownloader;
 import demo.Model.TokenHolder;
 import org.json.simple.parser.JSONParser;
 import org.springframework.context.annotation.Bean;
@@ -45,6 +46,10 @@ public class AppConfig {
     @Bean
     public JSONParser jsonParser() {
         return new JSONParser();
+    }
+    @Bean
+    public ImageDownloader imageDownloader(){
+        return new ImageDownloader();
     }
 
     /**

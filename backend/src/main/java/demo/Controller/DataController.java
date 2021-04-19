@@ -1,5 +1,6 @@
 package demo.Controller;
 
+import demo.Model.ImageDownloader;
 import demo.Model.TokenHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -13,11 +14,12 @@ public class DataController {
 
     private TokenHolder tokenHolder;
     private RestTemplate restTemplate;
-
+    private ImageDownloader imageDownloader;
     @Autowired
-    public DataController(TokenHolder tokenHolder, RestTemplate restTemplate) {
+    public DataController(TokenHolder tokenHolder, RestTemplate restTemplate,ImageDownloader imageDownloader) {
         this.tokenHolder = tokenHolder;
         this.restTemplate = restTemplate;
+        this.imageDownloader = imageDownloader;
     }
 
     private HttpEntity<String> makeBaseHttpEntity(String region) {
@@ -95,6 +97,16 @@ public class DataController {
                              @PathVariable String realmSlug, @PathVariable String name) {
         HttpEntity<String> entity = makeBaseHttpEntity(region);
         String url = getBaseUrl(region, realmSlug, name) + "/equipment"  + getLocale();
+        ResponseEntity<String> response
+                = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+        return response.getBody();
+    }
+
+    @GetMapping("/equipment/media/{itemId}")
+    public String getEquipmentMediaUrl(@PathVariable String region,
+                                   @PathVariable String realmSlug, @PathVariable String name,@PathVariable String itemId) {
+        HttpEntity<String> entity = makeBaseHttpEntity(region);
+        String url = "https://us.api.blizzard.com/data/wow/media/item/19019?namespace=static-us&locale=en_US&access_token=US6DnRrogmXUeS9bxwgD7m41F8E7t1znVA";
         ResponseEntity<String> response
                 = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
         return response.getBody();
