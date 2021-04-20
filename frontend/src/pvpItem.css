@@ -21,3 +21,8 @@
     height:200px;
 }
 
+.yeeter{
+    display: flex;
+    justify-content: space-between;
+}
+

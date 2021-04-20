@@ -2,6 +2,9 @@ import React from 'react';
 import './index.css';
 import PvPSection from "./PvPSection";
 import EquipmentItem from "./EquipmentItem";
+import TalentSection from "./TalentSection";
+import SoulbindSection from "./SoulbindSection";
+import Conduit from "./Conduit";
 
 export default class Character extends React.Component{
     constructor(props){
@@ -9,6 +12,9 @@ export default class Character extends React.Component{
         this.fetchDataDemo = this.fetchDataDemo.bind(this)
         this.fetchPvpData = this.fetchPvpData.bind(this)
         this.fetchEquipmentData = this.fetchEquipmentData.bind(this)
+        this.fetchTalentData = this.fetchTalentData.bind(this)
+        this.fetchSoulbindData = this.fetchSoulbindData.bind(this)
+        this.fetchConduitData = this.fetchConduitData.bind(this)
 
         this.state = {loaded : false}
     }
@@ -28,7 +34,6 @@ export default class Character extends React.Component{
             score : rioScore,
         }
 
-        console.log(filteredData)
         return filteredData;
     }
 
@@ -37,7 +42,7 @@ export default class Character extends React.Component{
         /*Shadowlands is the 9th expansion*/
         let sLandsRaids = raidData.expansions[8]
         let castleNathria = sLandsRaids.instances[0].modes
-        console.log(castleNathria)
+        return castleNathria
 
     }
 
@@ -53,29 +58,44 @@ export default class Character extends React.Component{
 
 
             }))
-        console.log(filteredData)
         return filteredData
+
+    }
+
+    async fetchTalentData(){
+        let allTalents = await (await fetch(this.props.baseUrl + "/talents")).json()
+        let activeSpecId = allTalents.active_specialization.id
+
+        let activeSpec = allTalents.specializations.filter(spec =>spec.specialization.id === activeSpecId)[0]
+        let talentIds = activeSpec.talents.map(tal =>tal.spell_tooltip.spell.id)
+        return talentIds
 
     }
 
     async componentDidMount() {
         let filteredData = await this.fetchPvpData()
         let equipData = await this.fetchEquipmentData()
-        console.log(equipData)
+        let talentData = await this.fetchTalentData()
+        let soulBindData = await this.fetchSoulbindData()
+        let conduitData = await this.fetchConduitData()
+        let raidData = await this.fetchRaidData()
         this.setState({
                 pvpData : filteredData,
+                talentData :talentData,
+                soulBindData : soulBindData,
+                conduitData : conduitData,
+                raidData : raidData,
                 loaded : true,
                 equipData : equipData
         }
             )
+        console.log(raidData)
     }
 
     async fetchPvpData(){
         let pvp2v2Data = await (await fetch(this.props.baseUrl + '/pvp/2v2')).json()
         let pvp3v3Data = await (await fetch(this.props.baseUrl + '/pvp/3v3')).json()
-        let pvp3v3Dataresponse = await fetch(this.props.baseUrl + '/pvp/3v3')
         let pvpRbgData = await (await fetch(this.props.baseUrl + '/pvp/rbg')).json()
-        console.log(pvp3v3Dataresponse)
         let filteredData = Array.of(pvp2v2Data,pvp3v3Data,pvpRbgData).map(data =>
             ({
                 bracket : data.bracket.type,
@@ -86,17 +106,29 @@ export default class Character extends React.Component{
 
             })
         )
-        console.log(filteredData)
         return filteredData
+    }
+
+    async fetchSoulbindData(){
+        let soulbindData = await (await fetch(this.props.baseUrl + "/covenant/soulbinds")).json()
+        return soulbindData
+    }
+    async fetchConduitData(){
+        let conduitData = await (await fetch(this.props.baseUrl + "/covenant/conduits")).json()
+        return conduitData
     }
 
     render(){
         if(this.state.loaded === false) return "loading"
         return <div>
-
-            <button type="button" onClick={this.fetchEquipmentData}>Fetch data</button>
+            <button type="button" onClick={this.fetchSoulbindData}>Fetch data</button>
             <button type="button" onClick={this.fetchMythicPlusData.bind(this)}>pvp data</button>
-            {this.state.equipData.map(item =><EquipmentItem data = {item} /> )}
+            <div className="yeeter">
+                {this.state.equipData.map(item =><EquipmentItem data = {item} /> )}
+                <TalentSection talentIds = {this.state.talentData} />
+            </div>
+            {this.state.conduitData.map(cond => <Conduit conduitId = {cond.id} itemLevel = {cond.itemLevel}/>)}
+            <SoulbindSection soulBindIds = {this.state.soulBindData} />
             <PvPSection data = {this.state.pvpData}/>
         </div>
     }
