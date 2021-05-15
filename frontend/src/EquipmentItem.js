@@ -19,7 +19,7 @@ export default class EquipmentItem extends React.Component{
             wowHeadUrl : url,
         }
     }
-
+    /*Need this to render wowhead tooltip correctly*/
     componentDidMount() {
         this.setState((state)=> {
             state = state
@@ -30,11 +30,12 @@ export default class EquipmentItem extends React.Component{
 
 
     render(){
-        {console.log(window.$WowheadPower.refreshLinks())}
-        return <div>
+        let a = window.$WowheadPower.refreshLinks()
+        return <div className="equipItem">
             <a href="#" data-wowhead={this.state.wowHeadUrl}>
 
             </a>
+            <p className={this.props.data.quality.toLowerCase()}>{this.props.data.level}</p>
         </div>
 
     }

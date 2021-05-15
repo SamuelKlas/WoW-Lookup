@@ -5,7 +5,9 @@ import EquipmentItem from "./EquipmentItem";
 import TalentSection from "./TalentSection";
 import SoulbindSection from "./SoulbindSection";
 import Conduit from "./Conduit";
-
+import RaidSection from "./RaidSection";
+import EquipSection from "./EquipSection"
+import './pvpItem.css'
 export default class Character extends React.Component{
     constructor(props){
         super(props)
@@ -24,7 +26,7 @@ export default class Character extends React.Component{
         this.fetchRaidData()
     }
 
-    async fetchMythicPlusData(){
+    fetchMythicPlusData = async () => {
         let dungeonData = await (await fetch(this.props.baseUrl + '/mythicPlus/raiderIO')).json()
         let bestRuns = dungeonData.mythic_plus_best_runs;
         let rioScore = bestRuns.map(run =>run.score).reduce((a, b) => a + b, 0)
@@ -33,14 +35,16 @@ export default class Character extends React.Component{
             bestRuns : bestRuns,
             score : rioScore,
         }
+        console.log(filteredData)
+        console.log(filteredData)
 
         return filteredData;
     }
 
-    async fetchRaidData(){
+    fetchRaidData = async () => {
         let raidData = await (await fetch(this.props.baseUrl + '/encounters/raids')).json()
         /*Shadowlands is the 9th expansion*/
-        let sLandsRaids = raidData.expansions[8]
+        let sLandsRaids = raidData.expansions.slice(-1)[0]
         let castleNathria = sLandsRaids.instances[0].modes
         return castleNathria
 
@@ -48,14 +52,15 @@ export default class Character extends React.Component{
 
     async fetchEquipmentData(){
         let equipData = await (await fetch(this.props.baseUrl + '/equipment')).json()
-        console.log(equipData)
-        let filteredData = equipData.equipped_items.map(item =>
+        let filteredData = equipData.equipped_items.filter(item => item.inventory_type.name !== "Tabard" &&
+            item.inventory_type.name !== "Shirt")
+            .map(item =>
             ({
                 id : item.item.id,
                 level : item.level.value,
                 enchantments : item.enchantments !== undefined ? item.enchantments.map(ench => ench.enchantment_id) : [],
-                sockets : item.sockets !== undefined ? item.sockets.map(socket => socket.item.id) : []
-
+                sockets : item.sockets !== undefined ? item.sockets.map(socket => socket.item.id) : [],
+                quality : item.quality.name
 
             }))
         return filteredData
@@ -68,7 +73,9 @@ export default class Character extends React.Component{
 
         let activeSpec = allTalents.specializations.filter(spec =>spec.specialization.id === activeSpecId)[0]
         let talentIds = activeSpec.talents.map(tal =>tal.spell_tooltip.spell.id)
-        return talentIds
+        let levels = [15,25,30,35,40,45,50]
+        let talentData = talentIds.map((e, i) => [e, levels[i]]);
+        return talentData
 
     }
 
@@ -86,23 +93,43 @@ export default class Character extends React.Component{
                 conduitData : conduitData,
                 raidData : raidData,
                 loaded : true,
-                equipData : equipData
+                equipData : equipData,
+
         }
             )
-        console.log(raidData)
+    }
+
+    fillPvPData(pvpData){
+        pvpData.bracket = {}
+        pvpData.bracket.type = "2v2"
+        pvpData.rating = 0
+        pvpData.tier = {}
+        pvpData.tier.id = 1
+        pvpData.season_match_statistics = {
+            won : 0, lost : 0, played : 0
+        }
     }
 
     async fetchPvpData(){
         let pvp2v2Data = await (await fetch(this.props.baseUrl + '/pvp/2v2')).json()
+        if(pvp2v2Data.status == 500){
+            this.fillPvPData(pvp2v2Data)
+        }
         let pvp3v3Data = await (await fetch(this.props.baseUrl + '/pvp/3v3')).json()
+        if(pvp3v3Data.status == 500){
+            this.fillPvPData(pvp3v3Data)
+        }
         let pvpRbgData = await (await fetch(this.props.baseUrl + '/pvp/rbg')).json()
+        if(pvpRbgData.status == 500){
+            this.fillPvPData(pvpRbgData)
+        }
+
         let filteredData = Array.of(pvp2v2Data,pvp3v3Data,pvpRbgData).map(data =>
             ({
                 bracket : data.bracket.type,
                 rating : data.rating,
                 tier : data.tier.id,
                 seasonStatistics : data.season_match_statistics,
-                weeklyStatistics : data.weekly_match_statistics
 
             })
         )
@@ -120,17 +147,17 @@ export default class Character extends React.Component{
 
     render(){
         if(this.state.loaded === false) return "loading"
-        return <div>
-            <button type="button" onClick={this.fetchSoulbindData}>Fetch data</button>
-            <button type="button" onClick={this.fetchMythicPlusData.bind(this)}>pvp data</button>
-            <div className="yeeter">
-                {this.state.equipData.map(item =><EquipmentItem data = {item} /> )}
-                <TalentSection talentIds = {this.state.talentData} />
-            </div>
-            {this.state.conduitData.map(cond => <Conduit conduitId = {cond.id} itemLevel = {cond.itemLevel}/>)}
-            <SoulbindSection soulBindIds = {this.state.soulBindData} />
+
+        return <div className="outer">
+            <button type="button" onClick={this.fetchMythicPlusData}>Fetch data</button>
+            <EquipSection equipData = {this.state.equipData} />
+            <TalentSection data = {this.state.talentData}/>
+            <SoulbindSection soulBindIds = {this.state.soulBindData} conduits = {this.state.conduitData} />
             <PvPSection data = {this.state.pvpData}/>
+            <RaidSection data = {this.state.raidData} />
         </div>
+
+
     }
 
 }

@@ -1,28 +1,147 @@
-.pvpItem{
-    max-width: 400px;
-    width:200px;
-    text-align:center;
-    background-color: transparent;
-    border: 1px solid transparent;
-    margin-right: 10px;
-    margin-bottom: 1px;
-    float:left;
-}
+
 
 .pvpWrapper{
     display: flex;
-    justify-content: space-between;
-    max-width: 1000px;
+    justify-content: flex-start;
+    flex-direction: row;
+    width : 50%;
     /*font-family: "Comic Sans MS", "Comic Sans", cursive;*/
 }
 
+
+
 .image{
-    width :200px;
-    height:200px;
+    width :5rem;
+    height:5rem;
 }
 
-.yeeter{
-    display: flex;
-    justify-content: space-between;
+.mythic{
+    background-color: darkgrey;
+    width : 50%;
 }
+
+.tryout{
+    background-image: url("castleNathria.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    color : white;
+    display : flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.tryout div {
+    margin: 1rem;
+    flex: 1;
+}
+
+.raidImage{
+    border: solid black 3px;
+}
+
+.empty{
+    opacity: 0.5;
+}
+
+.equip{
+    background-color: #0f0f0f;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    width: 33%;
+    border-style: solid;
+    border-color: #0f0f0f;
+    font-weight: bold;
+    border-width: 3px;
+}
+.items{
+    background-color: #5c5b5b;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.pvpItems{
+    justify-content: space-between;
+    text-align: center;
+}
+
+.equipItem{
+    margin:0.25rem;
+}
+.equipItem p {
+    margin: 1px;
+
+
+}
+.common{
+    background-color: #ffffff;
+}
+
+.uncommon{
+    background-color: #1eff00;
+}
+.rare {
+    background-color: #0070dd;
+}
+.epic{
+    background-color: #a335ee;
+}
+.legendary{
+    background-color: #ff8000;
+}
+
+.soulbindWrapper{
+    display: flex;
+}
+.soulbind{
+    flex: 1;
+ }
+.conduit{
+    flex : 2;
+}
+
+.soulbind:first-child {
+    margin-right: 10px;
+}
+
+.popup{
+    background-color: #5c5b5b;
+}
+
+@media only screen and (max-width: 700px) {
+    .equip{
+        width: 100%;
+    }
+}
+
+button {
+    -moz-box-shadow: inset 0 0 0 1px #63ad0d;
+    -webkit-box-shadow: inset 0 0 0 1px #63ad0d;
+    border-radius: 3px;
+    background: linear-gradient(#0f0f0f, #5c5b5b);
+    border: solid 1px #535353;
+    border-bottom: solid 3px #414141;
+    border-radius: 3px;
+    box-shadow: inset 0 0 0 1px #939393;
+    color: #fff;
+    display: inline-block;
+    margin: 0 25px 25px 0;
+    padding: 10px 20px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #2f2f2f; }
+
+button:hover {
+    background: linear-gradient(#5c5b5b, #0f0f0f);
+    border: solid 1px #464646;
+    border-bottom: solid 3px #414141;
+    box-shadow: inset 0 0 0 1px #818181; }
+
+button:active {
+    background: #0f0f0f;
+    box-shadow: inset 0 10px 15px 0 #3e3e3e; }
 

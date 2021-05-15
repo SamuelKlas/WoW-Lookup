@@ -1,6 +1,7 @@
 import React from 'react';
 import PvPBracket from "./PvPBracket";
 import "bootstrap/dist/css/bootstrap.css";
+import './pvpItem.css'
 
 
 export default class PvPSection extends React.Component{
@@ -9,7 +10,6 @@ export default class PvPSection extends React.Component{
 
     constructor(props){
         super(props)
-        this.state = {}
     }
 
     /*Handling wonky API endpoint, no idea how to better write this*/
@@ -56,10 +56,14 @@ export default class PvPSection extends React.Component{
 
         return (
 
-            <div className="pvpWrapper">
-                <PvPBracket imgUrl = {urls[0]} rating = {ratings[0]} statistics = {statistics[0]} name = '2v2'/>
-                <PvPBracket imgUrl = {urls[1]} rating = {ratings[1]} statistics = {statistics[1]} name = '3v3'/>
-                <PvPBracket imgUrl = {urls[2]} rating = {ratings[2]} statistics = {statistics[2]} name = 'Rated Battlegrounds'/>
+            <div className="equip">
+                <p>PvP Statistics</p>
+                <div className="items pvpItems">
+                    <PvPBracket imgUrl = {urls[0]} rating = {ratings[0]} statistics = {statistics[0]} name = '2v2'/>
+                    <PvPBracket imgUrl = {urls[1]} rating = {ratings[1]} statistics = {statistics[1]} name = '3v3'/>
+                    <PvPBracket imgUrl = {urls[2]} rating = {ratings[2]} statistics = {statistics[2]} name = 'Rbg'/>
+                </div>
+
             </div>
         )
 
