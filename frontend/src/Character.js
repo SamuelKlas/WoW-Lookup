@@ -35,9 +35,6 @@ export default class Character extends React.Component{
             bestRuns : bestRuns,
             score : rioScore,
         }
-        console.log(filteredData)
-        console.log(filteredData)
-
         return filteredData;
     }
 
@@ -98,6 +95,30 @@ export default class Character extends React.Component{
         }
             )
     }
+    async componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.baseUrl !== prevProps.baseUrl) {
+            this.setState({loaded:false})
+            let filteredData = await this.fetchPvpData()
+            let equipData = await this.fetchEquipmentData()
+            let talentData = await this.fetchTalentData()
+            let soulBindData = await this.fetchSoulbindData()
+            let conduitData = await this.fetchConduitData()
+            let raidData = await this.fetchRaidData()
+            this.setState({
+                    pvpData : filteredData,
+                    talentData :talentData,
+                    soulBindData : soulBindData,
+                    conduitData : conduitData,
+                    raidData : raidData,
+                    loaded : true,
+                    equipData : equipData,
+
+                }
+            )
+        }
+    }
+
 
     fillPvPData(pvpData){
         pvpData.bracket = {}
