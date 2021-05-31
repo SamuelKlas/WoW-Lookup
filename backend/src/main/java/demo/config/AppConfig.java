@@ -35,6 +35,12 @@ public class AppConfig {
         return new TokenHolder();
     }
 
+    @Bean
+    @Scope("prototype")
+    public String getString(){
+        return new String();
+    }
+
     /**
      * {@link MultipartResolver} is used to support file upload.
      */

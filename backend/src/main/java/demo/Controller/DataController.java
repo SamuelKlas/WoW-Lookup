@@ -1,6 +1,7 @@
 package demo.Controller;
 
 import demo.Model.ConduitPair;
+import demo.Model.CovenantData;
 import demo.Model.ImageDownloader;
 import demo.Model.TokenHolder;
 import org.json.simple.JSONArray;
@@ -15,9 +16,12 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+
 @RestController
 @RequestMapping("/{region}/{realmSlug}/{name}")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class DataController {
 
     private TokenHolder tokenHolder;
@@ -58,6 +62,16 @@ public class DataController {
         return response.getBody();
     }
 
+    @GetMapping("/character-media")
+    public String getCharacterMedia(@PathVariable String region, @PathVariable String realmSlug, @PathVariable String name) {
+        HttpEntity<String> entity = makeBaseHttpEntity(region);
+        String url = getBaseUrl(region, realmSlug, name) + "/character-media"+ getLocale();
+        ResponseEntity<String> response
+                = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+        return response.getBody();
+    }
+
+
 
     /*pvpBracket == 2v2 || 3v3 || rbg*/
     @GetMapping("/pvp/{pvpBracket}")
@@ -86,16 +100,6 @@ public class DataController {
                                    @PathVariable String realmSlug, @PathVariable String name) {
         HttpEntity<String> entity = makeBaseHttpEntity(region);
         String url = getBaseUrl(region, realmSlug, name) + "/equipment" + getLocale();
-        ResponseEntity<String> response
-                = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-        return response.getBody();
-    }
-
-    @GetMapping("/equipment/media/{itemId}")
-    public String getEquipmentMediaUrl(@PathVariable String region,
-                                       @PathVariable String realmSlug, @PathVariable String name, @PathVariable String itemId) {
-        HttpEntity<String> entity = makeBaseHttpEntity(region);
-        String url = "https://us.api.blizzard.com/data/wow/media/item/19019?namespace=static-us&locale=en_US&access_token=US6DnRrogmXUeS9bxwgD7m41F8E7t1znVA";
         ResponseEntity<String> response
                 = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
         return response.getBody();
@@ -136,9 +140,8 @@ public class DataController {
         return activeSoublind.toString();
     }
 
-    @GetMapping("/covenant/soulbinds")
-    public List<Long> parseSoulbindForTraits(@PathVariable String region,
-                                             @PathVariable String realmSlug, @PathVariable String name) throws ParseException {
+    public List<Long> parseSoulbindForTraits( String region,
+                                              String realmSlug,  String name) throws ParseException {
         List<String> urls = new ArrayList<>();
         String soulBindString= getActiveSoulBind(region, realmSlug, name);
         JSONParser jsonParser = new JSONParser();
@@ -162,9 +165,29 @@ public class DataController {
         return ids;
     }
 
-    @GetMapping("/covenant/conduits")
-    public List<ConduitPair> parseSoulbindForConduits(@PathVariable String region,
-                                                      @PathVariable String realmSlug, @PathVariable String name) throws ParseException {
+    public String getCovenantFromSoulbind(String soulbind){
+        String ret = "";
+        switch(soulbind){
+            case "Pelagos" : case "Kleia" : case "Forgelite Prime Mikanikos":
+                ret = "Kyrian";
+                break;
+            case "Plague Deviser Marileth": case "Emeni" : case "Bonesmith Heirmir":
+                ret = "Necrolord";
+                break;
+            case "Niya" : case "Dreamweaver" : case "Korayn":
+                ret = "Night Fae";
+                break;
+            case "Theotar the Mad Duke": case "Nadjia the Mistblade": case "General Draven":
+                ret = "Venthyr";
+                break;
+
+        }
+        return ret;
+
+    }
+
+    public List<ConduitPair> parseSoulbindForConduits( String region,
+                                                       String realmSlug,  String name) throws ParseException {
         List<ConduitPair> pairs = new ArrayList<>();
         List<String> urls = new ArrayList<>();
         List<Long> ranks = new ArrayList<>();
@@ -172,7 +195,6 @@ public class DataController {
         JSONParser jsonParser = new JSONParser();
         JSONObject activeSoulBind = (JSONObject) jsonParser.parse(soulBindString);
         JSONArray traits = (JSONArray) activeSoulBind.get("traits");
-
         for (int i = 0; i < traits.size(); i++) {
             JSONObject element = (JSONObject) traits.get(i);
             JSONObject trait = (JSONObject) element.get("conduit_socket");
@@ -194,6 +216,29 @@ public class DataController {
         }
         return pairs;
     }
+
+
+    @GetMapping("/covenant")
+    public CovenantData parseSoulbind(@PathVariable String region,
+                                      @PathVariable String realmSlug, @PathVariable String name) throws ParseException {
+
+        List<ConduitPair>conduits = parseSoulbindForConduits(region, realmSlug, name);
+        List<Long> traits = parseSoulbindForTraits(region, realmSlug, name);
+        String soulBindString= getActiveSoulBind(region, realmSlug, name);
+        JSONParser jsonParser = new JSONParser();
+        JSONObject activeSoulBind = (JSONObject) jsonParser.parse(soulBindString);
+        JSONObject soulBindName = (JSONObject) activeSoulBind.get("soulbind");
+        String sName  = soulBindName.get("name").toString();
+        String covenant = getCovenantFromSoulbind(sName);
+
+        CovenantData data = new CovenantData(covenant,sName,traits,conduits);
+
+        return data;
+
+
+
+    }
+
 
     public long getSoulbindTraitId(String url) throws ParseException {
         HttpEntity<String> entity = makeBaseHttpEntity("us");

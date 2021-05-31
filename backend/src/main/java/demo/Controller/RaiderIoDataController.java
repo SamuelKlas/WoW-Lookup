@@ -9,7 +9,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/{region}/{realmSlug}/{name}")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 
 public class RaiderIoDataController {
     private TokenHolder tokenHolder;
