@@ -5,10 +5,13 @@ class App extends Component {
 
     constructor(props) {
         super(props);
+
+        Array.prototype.contains = function(s) { return this.indexOf(s) !== -1 }
+
         this.state = {
             server: "",
             name: "",
-            region: "",
+            region: "eu",
             url : ""
         }
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -27,8 +30,9 @@ class App extends Component {
     }
 
     handleSubmit(event){
+            let server = this.state.server.toLowerCase().replace(" ","").replace("'","")
             this.setState((state)=> {
-                state.url = "http://localhost:8080/backend/" + state.region +"/" +state.server +"/" + state.name
+                state.url = "http://localhost:8080/backend/" + state.region +"/" + server +"/" + state.name.toLowerCase()
                 return state
             });
             event.preventDefault();
@@ -45,16 +49,15 @@ class App extends Component {
                         <input name ="name" type="text" value={this.state.name} onChange={this.handleInputChange}/>
                     </label>
                     <label>
-                        Name:
+                        Server:
                         <input name ="server" type="text" value={this.state.server} onChange={this.handleInputChange}/>
                     </label>
                     <select name = "region" value={this.state.region} onChange={this.handleInputChange}>
-                        <option value="eu">eu</option>
+                        <option value="eu" selected>eu</option>
                         <option value="na">na</option>
                     </select>
-                    <input type="submit" value="Submit"/>
+                    <input type="submit" value="Search"/>
                 </form>
-
                 {
                     this.state.url !== "" &&
                     <Character baseUrl={this.state.url}/>

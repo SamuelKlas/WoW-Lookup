@@ -6,6 +6,7 @@ class Conduit extends Component {
         this.state = {
             yeet: "yeet"
         }
+        console.log(props)
     }
 
     componentDidMount() {
@@ -19,7 +20,7 @@ class Conduit extends Component {
         let wowHeadUrl = "spell=" + this.props.conduitId + "&ilvl=" + this.props.itemLevel
         let a = window.$WowheadPower.refreshLinks()
         return (
-            <div>
+            <div style={{margin:"0.5rem "}}>
                 <a href="#" data-wowhead={wowHeadUrl}/>
             </div>
         );

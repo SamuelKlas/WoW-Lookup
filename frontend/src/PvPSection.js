@@ -6,12 +6,6 @@ import './pvpItem.css'
 
 export default class PvPSection extends React.Component{
 
-
-
-    constructor(props){
-        super(props)
-    }
-
     /*Handling wonky API endpoint, no idea how to better write this*/
     mapPvPTierToIcon(bracket){
         let ret = "pvpTiers"
@@ -57,7 +51,7 @@ export default class PvPSection extends React.Component{
         return (
 
             <div className="equip">
-                <p>PvP Statistics</p>
+                <h2>PvP Statistics</h2>
                 <div className="items pvpItems">
                     <PvPBracket imgUrl = {urls[0]} rating = {ratings[0]} statistics = {statistics[0]} name = '2v2'/>
                     <PvPBracket imgUrl = {urls[1]} rating = {ratings[1]} statistics = {statistics[1]} name = '3v3'/>

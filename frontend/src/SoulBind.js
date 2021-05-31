@@ -19,7 +19,7 @@ class SoulBind extends Component {
         let a = window.$WowheadPower.refreshLinks()
         let wowHeadUrl = "spell=" + this.props.soulBindId
         return (
-            <div>
+            <div style={{margin:"0.5rem "}}>
                 <a href="#" data-wowhead={wowHeadUrl}/>
             </div>
         );

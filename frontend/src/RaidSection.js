@@ -7,7 +7,6 @@ class RaidSection extends Component {
             difficulty : "Normal",
             id : 0,
         }
-        console.log(props)
     }
 
     handleMythicClick = () => {

@@ -1,26 +1,12 @@
 
 
-.pvpWrapper{
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: row;
-    width : 50%;
-    /*font-family: "Comic Sans MS", "Comic Sans", cursive;*/
-}
-
-
-
 .image{
     width :5rem;
     height:5rem;
 }
 
-.mythic{
-    background-color: darkgrey;
-    width : 50%;
-}
 
-.tryout{
+.raidItems{
     background-image: url("castleNathria.jpg");
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -32,13 +18,18 @@
     align-items: flex-start;
 }
 
-.tryout div {
-    margin: 1rem;
+.raidItems div {
+    margin: 2rem;
     flex: 1;
 }
 
 .raidImage{
     border: solid black 3px;
+}
+
+.backImage{
+    width: 100%;
+    height:auto;
 }
 
 .empty{
@@ -48,9 +39,9 @@
 .equip{
     background-color: #0f0f0f;
     color: white;
+    width : 50rem;
     text-align: center;
     vertical-align: middle;
-    width: 33%;
     border-style: solid;
     border-color: #0f0f0f;
     font-weight: bold;
@@ -63,9 +54,15 @@
     justify-content: center;
     flex-wrap: wrap;
 }
+
 .pvpItems{
+    display: flex;
     justify-content: space-between;
     text-align: center;
+}
+
+.pvpItem{
+    margin : 0.625rem;
 }
 
 .equipItem{
@@ -73,9 +70,8 @@
 }
 .equipItem p {
     margin: 1px;
-
-
 }
+
 .common{
     background-color: #ffffff;
 }
@@ -110,12 +106,34 @@
 .popup{
     background-color: #5c5b5b;
 }
+.dungeonImage{
+    width: 2.5rem;
+    height: 2.5rem;
+}
 
-@media only screen and (max-width: 700px) {
-    .equip{
+.affixImage{
+    width:1.5rem;
+    height:1.5rem ;
+}
+
+@media only screen and (max-width: 1024px) {
+    .equip, .raidItems{
         width: 100%;
+        margin:auto;
     }
 }
+table{
+    width:100%;
+}
+td,tr {
+    text-align: left;
+    padding : 1rem 0.5rem;
+}
+
+tr:nth-child(2n) {
+    background-color: #5c5b5b;
+}
+
 
 button {
     -moz-box-shadow: inset 0 0 0 1px #63ad0d;
@@ -144,4 +162,42 @@ button:hover {
 button:active {
     background: #0f0f0f;
     box-shadow: inset 0 10px 15px 0 #3e3e3e; }
+
+.affix{
+    display: inline-block;
+}
+
+.covenantText{
+    display: inline-block;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    background-color: rgba(0,0,0,0.9);
+    color: #fff;
+    margin: 0.625rem;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    border: white 1px solid;
+    max-width: 12rem;
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltiptext p,.tooltiptext h5{
+    margin:1rem;
+}
+
+
+img:hover + .tooltiptext {
+    visibility: visible;
+}
+
+.covenantImage{
+    width: 3rem;
+    height:3rem;
+}
+
+
 

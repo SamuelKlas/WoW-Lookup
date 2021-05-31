@@ -1,13 +1,8 @@
 import React from 'react'
 import './pvpItem.css'
 
-import "bootstrap/dist/css/bootstrap.css";
-
-import {Popup} from 'semantic-ui-react'
-
-
 const PopupContent = (props) => (
-    <div>
+    <div className="tooltiptext">
         <h5>Season Statistics</h5>
         <p>Won   : {props.data.won}</p>
         <p>Lost  : {props.data.lost}</p>
@@ -18,13 +13,6 @@ const PopupContent = (props) => (
     </div>
 )
 
-const style = {
-    borderRadius: 0,
-    padding: '2em',
-    backgroundColor:"#0f0f0f",
-    color: "white",
-}
-
 
 export default class PvPBracket extends React.Component {
 
@@ -32,13 +20,10 @@ export default class PvPBracket extends React.Component {
 
         return (
 
-        <div>
+        <div className="pvpItem">
             <p>{this.props.name}</p>
-            <Popup basic
-                   trigger={<img className="image"  src={this.props.imgUrl} alt=""/>}
-                   style={style}>
-                <PopupContent data ={this.props.statistics}/>
-            </Popup>
+            <img className="image"  src={this.props.imgUrl} alt=""/>
+            <PopupContent data ={this.props.statistics}/>
             <p>{this.props.rating}</p>
         </div>
         )

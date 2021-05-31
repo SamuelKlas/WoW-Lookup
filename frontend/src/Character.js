@@ -1,53 +1,72 @@
 import React from 'react';
 import './index.css';
 import PvPSection from "./PvPSection";
-import EquipmentItem from "./EquipmentItem";
 import TalentSection from "./TalentSection";
 import SoulbindSection from "./SoulbindSection";
-import Conduit from "./Conduit";
 import RaidSection from "./RaidSection";
 import EquipSection from "./EquipSection"
 import './pvpItem.css'
+import DungeonSection from "./DungeonSection";
+import "./loader.css"
+import Loader from "./Loader"
+import Summary from "./Summary";
 export default class Character extends React.Component{
     constructor(props){
         super(props)
-        this.fetchDataDemo = this.fetchDataDemo.bind(this)
-        this.fetchPvpData = this.fetchPvpData.bind(this)
-        this.fetchEquipmentData = this.fetchEquipmentData.bind(this)
-        this.fetchTalentData = this.fetchTalentData.bind(this)
-        this.fetchSoulbindData = this.fetchSoulbindData.bind(this)
-        this.fetchConduitData = this.fetchConduitData.bind(this)
-
         this.state = {loaded : false}
     }
 
 
-    async fetchDataDemo(){
-        this.fetchRaidData()
+
+    fetchSummaryData = async () => {
+        let summaryData = await (await fetch(this.props.baseUrl)).json()
+        let nameTitle = summaryData.active_title === undefined ? summaryData.name :
+            summaryData.active_title.display_string.replace("{name}",summaryData.name)
+
+        let filteredData ={
+            name : summaryData.name,
+            class : summaryData.character_class.name,
+            spec : summaryData.active_spec.name,
+            title : nameTitle,
+            covenant : summaryData.covenant_progress.chosen_covenant.name,
+            renown : summaryData.covenant_progress.renown_level,
+            faction : summaryData.faction.name,
+            guild :summaryData.guild === undefined ? "" : summaryData.guild.name,
+            level : summaryData.level,
+            race : summaryData.race.name
+        }
+        console.log(summaryData)
+        console.log(filteredData)
+        return filteredData
+
+}
+
+    fetchCharacterMedia = async () => {
+        let mediaData = await (await fetch(this.props.baseUrl + '/character-media')).json()
+        return mediaData
     }
 
     fetchMythicPlusData = async () => {
         let dungeonData = await (await fetch(this.props.baseUrl + '/mythicPlus/raiderIO')).json()
         let bestRuns = dungeonData.mythic_plus_best_runs;
         let rioScore = bestRuns.map(run =>run.score).reduce((a, b) => a + b, 0)
-
         let filteredData = {
             bestRuns : bestRuns,
             score : rioScore,
+            thumbnailUrl: dungeonData.thumbnail_url,
         }
         return filteredData;
     }
 
     fetchRaidData = async () => {
         let raidData = await (await fetch(this.props.baseUrl + '/encounters/raids')).json()
-        /*Shadowlands is the 9th expansion*/
         let sLandsRaids = raidData.expansions.slice(-1)[0]
         let castleNathria = sLandsRaids.instances[0].modes
         return castleNathria
 
     }
 
-    async fetchEquipmentData(){
+    fetchEquipmentData = async() =>{
         let equipData = await (await fetch(this.props.baseUrl + '/equipment')).json()
         let filteredData = equipData.equipped_items.filter(item => item.inventory_type.name !== "Tabard" &&
             item.inventory_type.name !== "Shirt")
@@ -64,7 +83,7 @@ export default class Character extends React.Component{
 
     }
 
-    async fetchTalentData(){
+    fetchTalentData = async() =>{
         let allTalents = await (await fetch(this.props.baseUrl + "/talents")).json()
         let activeSpecId = allTalents.active_specialization.id
 
@@ -75,47 +94,34 @@ export default class Character extends React.Component{
         return talentData
 
     }
-
-    async componentDidMount() {
-        let filteredData = await this.fetchPvpData()
-        let equipData = await this.fetchEquipmentData()
-        let talentData = await this.fetchTalentData()
-        let soulBindData = await this.fetchSoulbindData()
-        let conduitData = await this.fetchConduitData()
-        let raidData = await this.fetchRaidData()
+    fetchData = async () =>{
+        this.setState({loaded:false})
+        let [summaryData,filteredData, equipData,talentData,soulBindData,raidData,dungeonData,mediaData]
+            = await Promise.all(
+            [this.fetchSummaryData(),this.fetchPvpData(), this.fetchEquipmentData(), this.fetchTalentData(),
+                this.fetchSoulbindData(),
+                this.fetchRaidData(),this.fetchMythicPlusData(),this.fetchCharacterMedia()]);
         this.setState({
+                summaryData : summaryData,
                 pvpData : filteredData,
                 talentData :talentData,
                 soulBindData : soulBindData,
-                conduitData : conduitData,
                 raidData : raidData,
                 loaded : true,
                 equipData : equipData,
+                dungeonData : dungeonData,
+                mediaData : mediaData
 
-        }
-            )
+            }
+        )
+    }
+
+    async componentDidMount() {
+        await this.fetchData()
     }
     async componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
         if (this.props.baseUrl !== prevProps.baseUrl) {
-            this.setState({loaded:false})
-            let filteredData = await this.fetchPvpData()
-            let equipData = await this.fetchEquipmentData()
-            let talentData = await this.fetchTalentData()
-            let soulBindData = await this.fetchSoulbindData()
-            let conduitData = await this.fetchConduitData()
-            let raidData = await this.fetchRaidData()
-            this.setState({
-                    pvpData : filteredData,
-                    talentData :talentData,
-                    soulBindData : soulBindData,
-                    conduitData : conduitData,
-                    raidData : raidData,
-                    loaded : true,
-                    equipData : equipData,
-
-                }
-            )
+            await this.fetchData()
         }
     }
 
@@ -131,17 +137,17 @@ export default class Character extends React.Component{
         }
     }
 
-    async fetchPvpData(){
+    fetchPvpData = async() =>{
         let pvp2v2Data = await (await fetch(this.props.baseUrl + '/pvp/2v2')).json()
-        if(pvp2v2Data.status == 500){
+        if(pvp2v2Data.status === 500){
             this.fillPvPData(pvp2v2Data)
         }
         let pvp3v3Data = await (await fetch(this.props.baseUrl + '/pvp/3v3')).json()
-        if(pvp3v3Data.status == 500){
+        if(pvp3v3Data.status === 500){
             this.fillPvPData(pvp3v3Data)
         }
         let pvpRbgData = await (await fetch(this.props.baseUrl + '/pvp/rbg')).json()
-        if(pvpRbgData.status == 500){
+        if(pvpRbgData.status === 500){
             this.fillPvPData(pvpRbgData)
         }
 
@@ -157,25 +163,31 @@ export default class Character extends React.Component{
         return filteredData
     }
 
-    async fetchSoulbindData(){
-        let soulbindData = await (await fetch(this.props.baseUrl + "/covenant/soulbinds")).json()
+    fetchSoulbindData = async() =>{
+        let soulbindData = await (await fetch(this.props.baseUrl + "/covenant")).json()
+        console.log(soulbindData)
         return soulbindData
-    }
-    async fetchConduitData(){
-        let conduitData = await (await fetch(this.props.baseUrl + "/covenant/conduits")).json()
-        return conduitData
     }
 
     render(){
-        if(this.state.loaded === false) return "loading"
+        if(this.state.loaded === false){
+            return <Loader/>
+        }
 
-        return <div className="outer">
-            <button type="button" onClick={this.fetchMythicPlusData}>Fetch data</button>
+        return <div>
+            <button type="button" onClick={this.fetchCharacterMedia}>Fetch data</button>
+            <Summary data = {this.state.summaryData} thumbnailUrl = {this.state.dungeonData.thumbnailUrl}
+                     mainUrl = {this.state.mediaData.assets[2].value} covenant = {this.state.soulBindData.covenant} />
             <EquipSection equipData = {this.state.equipData} />
             <TalentSection data = {this.state.talentData}/>
-            <SoulbindSection soulBindIds = {this.state.soulBindData} conduits = {this.state.conduitData} />
+            <SoulbindSection soulBindIds = {this.state.soulBindData.soulbinds}
+                             soulbind = {this.state.soulBindData.soulbind}
+                             conduits = {this.state.soulBindData.conduits}
+                             covenant = {this.state.soulBindData.covenant}
+            />
             <PvPSection data = {this.state.pvpData}/>
             <RaidSection data = {this.state.raidData} />
+            <DungeonSection data = {this.state.dungeonData} />
         </div>
 
 

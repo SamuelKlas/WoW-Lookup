@@ -14,7 +14,7 @@ class EquipSection extends Component {
     render() {
         return (
             <div className="equip">
-                <p>Equipment</p>
+                <h2>Equipment</h2>
                 <p>Average Item level : {this.state.averageItemLevel}</p>
                 <div className="items">
                     {this.props.equipData.map(item =><EquipmentItem data = {item} /> )}

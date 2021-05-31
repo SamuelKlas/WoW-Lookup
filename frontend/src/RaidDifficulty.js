@@ -6,7 +6,6 @@ class RaidDifficulty extends Component {
 
     constructor(props) {
         super(props);
-        console.log(props)
     }
 
     getBossImages = () => {
@@ -39,11 +38,11 @@ class RaidDifficulty extends Component {
     }
     render() {
         return (
-            <div className="tryout">
+            <div className="raidItems">
                 {
                 this.getBossImages().map(encounter =>
-                    <div>
-                        <img className={"raidImage " + encounter.style} src={"/raidBosses/" + encounter.name + ".jpg"}/>
+                    <div className="raidItem">
+                        <img className={"raidImage " + encounter.style} src={"/raidBosses/" + encounter.name + ".jpg"} alt=""/>
                         <p>{encounter.name}</p>
                         <p>{encounter.timesKilled}</p>
                     </div>)
