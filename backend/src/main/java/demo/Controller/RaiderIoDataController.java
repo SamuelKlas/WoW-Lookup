@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/{region}/{realmSlug}/{name}")
+@RequestMapping("/backend/{region}/{realmSlug}/{name}")
 @CrossOrigin(origins = "*")
 
 public class RaiderIoDataController {
@@ -42,7 +42,6 @@ public class RaiderIoDataController {
 
         ResponseEntity<String> response
                 = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
-        System.out.println(response.getBody());
         return response.getBody();
     }
 

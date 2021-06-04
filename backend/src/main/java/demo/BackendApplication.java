@@ -25,10 +25,9 @@ public class BackendApplication {
 
 
     }
-    @GetMapping("/yeet")
-    public void yoted() throws IOException, ParseException {
-
-        img.writeImages(new int[]{1, 2, 3,4,5,6,7,8,9,10,11,12,13,14,15,16,117,118,119,120,121,122,123,124});
+    @GetMapping("")
+    public String yesman() throws IOException, ParseException {
+        return "Yesman";
     }
 
 }

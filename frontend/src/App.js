@@ -32,7 +32,8 @@ class App extends Component {
     handleSubmit(event){
             let server = this.state.server.toLowerCase().replace(" ","").replace("'","")
             this.setState((state)=> {
-                state.url = "http://localhost:8080/backend/" + state.region +"/" + server +"/" + state.name.toLowerCase()
+                state.url = "http://spectralsite-env-1.eba-hhxhkqbm.us-east-2.elasticbeanstalk.com/backend/"
+                    + state.region +"/" + server +"/" + state.name.toLowerCase()
                 return state
             });
             event.preventDefault();

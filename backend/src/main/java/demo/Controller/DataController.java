@@ -20,7 +20,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/{region}/{realmSlug}/{name}")
+@RequestMapping("/backend/{region}/{realmSlug}/{name}")
 @CrossOrigin(origins = "*")
 public class DataController {
 

@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/equipment")
+@RequestMapping("/backend/equipment")
 @CrossOrigin(origins = "*")
 
 public class EquipmentDataController {
@@ -45,18 +45,18 @@ public class EquipmentDataController {
     }
 
 
-    @GetMapping("/media/{itemId}")
-    public String getEquipmentMediaUrl(@PathVariable String itemId) throws ParseException, IOException {
-        HttpEntity<String> entity = makeBaseHttpEntity();
-        String url = getBaseUrl(itemId);
-        ResponseEntity<String> response
-                = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-        JSONParser jsonParser = new JSONParser();
-        JSONObject json = (JSONObject) jsonParser.parse(response.getBody());
-        JSONArray assets = (JSONArray) json.get("assets");
-        JSONObject asset = (JSONObject) assets.get(0);
-        String value = (String) asset.get("value");
-        imageDownloader.writeImage(Integer.parseInt(itemId),value);
-        return value;
-    }
+//    @GetMapping("/media/{itemId}")
+//    public String getEquipmentMediaUrl(@PathVariable String itemId) throws ParseException, IOException {
+//        HttpEntity<String> entity = makeBaseHttpEntity();
+//        String url = getBaseUrl(itemId);
+//        ResponseEntity<String> response
+//                = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+//        JSONParser jsonParser = new JSONParser();
+//        JSONObject json = (JSONObject) jsonParser.parse(response.getBody());
+//        JSONArray assets = (JSONArray) json.get("assets");
+//        JSONObject asset = (JSONObject) assets.get(0);
+//        String value = (String) asset.get("value");
+//        imageDownloader.writeImage(Integer.parseInt(itemId),value);
+//        return value;
+//    }
 }

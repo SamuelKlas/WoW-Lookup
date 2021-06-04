@@ -135,7 +135,7 @@ tr:nth-child(2n) {
 }
 
 
-button {
+button, input[type=submit] {
     -moz-box-shadow: inset 0 0 0 1px #63ad0d;
     -webkit-box-shadow: inset 0 0 0 1px #63ad0d;
     border-radius: 3px;
@@ -153,13 +153,13 @@ button {
     text-decoration: none;
     text-shadow: 0 1px 0 #2f2f2f; }
 
-button:hover {
+button:hover, input[type=submit]:hover {
     background: linear-gradient(#5c5b5b, #0f0f0f);
     border: solid 1px #464646;
     border-bottom: solid 3px #414141;
     box-shadow: inset 0 0 0 1px #818181; }
 
-button:active {
+button:active,input[type=submit]:active {
     background: #0f0f0f;
     box-shadow: inset 0 10px 15px 0 #3e3e3e; }
 
