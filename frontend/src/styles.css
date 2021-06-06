@@ -1,0 +1,229 @@
+
+#root{
+    background-color: #1a1E23;
+    width: 100%;
+    height: 100%;
+}
+
+.outerDiv{
+    color : #ffffff;
+    margin : 0 auto;
+    width : 65rem;
+    background-color: #1a1E23;
+}
+
+h1,p{
+    text-align: center;
+}
+
+.formWrapper{
+    text-align: center;
+}
+.image{
+    width :5rem;
+    height:5rem;
+}
+
+
+.raidItems{
+    background-image: url("castleNathria.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    color : white;
+    display : flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+@media only screen and (max-width: 620px) {
+    .raidItems{
+        background-position: 50% 0;
+        background-size: cover;
+    }
+}
+
+
+
+.raidItems div {
+    margin: 2rem;
+    flex: 1;
+}
+
+.raidImage{
+    border: solid black 3px;
+}
+
+.backImage{
+    width: 100%;
+    height:auto;
+}
+
+.empty{
+    opacity: 0.5;
+}
+
+.equip{
+    background-color: #0f0f0f;
+    color: white;
+    width : 100%;
+    text-align: center;
+    vertical-align: middle;
+    border-style: solid;
+    border-color: #0f0f0f;
+    font-weight: bold;
+    border-width: 3px;
+}
+
+.items{
+    background-color: #262429;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.pvpItems{
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.pvpItem{
+    margin : 0.625rem;
+}
+
+.equipItem{
+    margin:0.25rem;
+}
+.equipItem p {
+    margin: 1px;
+}
+
+.soulbindWrapper{
+    display: flex;
+}
+.soulbind{
+    flex: 1;
+ }
+.conduit{
+    flex : 2;
+}
+
+.soulbind:first-child {
+    margin-right: 10px;
+}
+
+.popup{
+    background-color: #262429;
+}
+.dungeonImage{
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.affixImage{
+    width:1.5rem;
+    height:1.5rem ;
+}
+
+@media only screen and (max-width: 1024px) {
+    .outerDiv{
+        width: 100%;
+        margin:auto;
+    }
+}
+table{
+    width:100%;
+}
+td,tr {
+    text-align: left;
+    padding : 1rem 0.5rem;
+}
+
+tr:nth-child(2n) {
+    background-color: #262429;
+}
+
+
+button, input[type=submit],select {
+    -moz-box-shadow: inset 0 0 0 1px #63ad0d;
+    -webkit-box-shadow: inset 0 0 0 1px #63ad0d;
+    border-radius: 3px;
+    background: linear-gradient(#0f0f0f, #262429);
+    border: solid 1px #535353;
+    border-bottom: solid 3px #414141;
+    box-shadow: inset 0 0 0 1px #939393;
+    color: #fff;
+    display: inline-block;
+    margin: 0 25px 25px 0;
+    padding: 10px 20px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #2f2f2f; }
+
+button:hover, input[type=submit]:hover,select:hover {
+    background: linear-gradient(#262429, #0f0f0f);
+    border: solid 1px #464646;
+    border-bottom: solid 3px #414141;
+    box-shadow: inset 0 0 0 1px #818181; }
+
+button:active,input[type=submit]:active,select:active {
+    background: #0f0f0f;
+    box-shadow: inset 0 10px 15px 0 #3e3e3e;
+}
+
+.select{
+    margin:0px 0px 0px 0px;
+}
+
+option{
+    background-color: #0f0f0f;
+}
+
+input[type=text],textarea{
+    color: white;
+    border: 1px solid white;
+    background-color: #0f0f0f;
+}
+
+
+
+.affix{
+    display: inline-block;
+}
+
+
+
+.tooltiptext {
+    visibility: hidden;
+    background-color: rgba(0,0,0,0.9);
+    color: #fff;
+    margin: 0.625rem;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    border: white 1px solid;
+    max-width: 12rem;
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltiptext p,.tooltiptext h5{
+    margin:1rem;
+}
+
+
+img:hover + .tooltiptext {
+    visibility: visible;
+}
+
+.covenantImage{
+    width: 3rem;
+    height:3rem;
+}
+
+
+
