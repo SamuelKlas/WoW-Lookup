@@ -1,18 +1,21 @@
 import React, {Component} from 'react';
 import Character from "./Character";
+import './styles.css'
 
 class App extends Component {
 
     constructor(props) {
         super(props);
 
-        Array.prototype.contains = function(s) { return this.indexOf(s) !== -1 }
+        Array.prototype.contains = function (s) {
+            return this.indexOf(s) !== -1
+        }
 
         this.state = {
             server: "",
             name: "",
             region: "eu",
-            url : ""
+            url: ""
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -29,36 +32,48 @@ class App extends Component {
         });
     }
 
-    handleSubmit(event){
-            let server = this.state.server.toLowerCase().replace(" ","").replace("'","")
-            this.setState((state)=> {
-                state.url = "https://spectralsite-env-1.eba-hhxhkqbm.us-east-2.elasticbeanstalk.com/backend/"
-                    + state.region +"/" + server +"/" + state.name.toLowerCase()
-                return state
-            });
-            event.preventDefault();
-            console.log(this.state)
+    handleSubmit(event) {
+        if(this.state.server === "" || this.state.name === ""){
+            alert("Please fill out the name and server fields")
+            return
+        }
+        /*convert server to serverSlug for api access*/
+        let server = this.state.server.toLowerCase()
+            .replace(" ", "-").replace("'", "")
+        /*backend url*/
+        this.setState((state) => {
+            state.url = "https://calm-reaches-90919.herokuapp.com/backend/"
+                + state.region + "/" + server + "/" + state.name.toLowerCase()
+            return state
+        });
+        event.preventDefault();
     }
 
     render() {
         return (
 
-            <div>
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Name:
-                        <input name ="name" type="text" value={this.state.name} onChange={this.handleInputChange}/>
-                    </label>
-                    <label>
-                        Server:
-                        <input name ="server" type="text" value={this.state.server} onChange={this.handleInputChange}/>
-                    </label>
-                    <select name = "region" value={this.state.region} onChange={this.handleInputChange}>
-                        <option value="eu" selected>eu</option>
-                        <option value="na">na</option>
-                    </select>
-                    <input type="submit" value="Search"/>
-                </form>
+
+            <div className="outerDiv">
+                <h1>Spectral Site</h1>
+                <div className="formWrapper">
+                    <form style={{margin: "auto"}} autoComplete="off" onSubmit={this.handleSubmit}>
+                        <label>Name:</label>
+                        <br/>
+                        <input name="name" type="text" value={this.state.name} onChange={this.handleInputChange}/>
+                        <br/>
+                        <label>Server:</label>
+                        <br/>
+                        <input name="server" type="text" value={this.state.server} onChange={this.handleInputChange}/>
+                        <br/>
+                        <select className="select" name="region" value={this.state.region}
+                                onChange={this.handleInputChange}>
+                            <option name="region" value="eu">eu</option>
+                            <option name="region" value="us">us</option>
+                        </select>
+                        <br/>
+                        <input style={{margin: "0"}} type="submit" value="Search"/>
+                    </form>
+                </div>
                 {
                     this.state.url !== "" &&
                     <Character baseUrl={this.state.url}/>
