@@ -10,7 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @RequestMapping("/backend/{region}/{realmSlug}/{name}")
 @CrossOrigin(origins = "*")
-
+/*https://dazzling-swartz-de7579.netlify.app*/
 public class RaiderIoDataController {
     private TokenHolder tokenHolder;
     private RestTemplate restTemplate;
@@ -23,6 +23,7 @@ public class RaiderIoDataController {
 
     private HttpEntity<String> makeBaseHttpEntity() {
         HttpHeaders headers = new HttpHeaders();
+        headers.add("User-Agent", "Mozilla/5.0");
         HttpEntity<String> entity = new HttpEntity<>(headers);
         return entity;
     }
