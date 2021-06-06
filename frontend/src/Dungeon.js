@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import "./pvpItem.css"
+import "./styles.css"
 
 function Affix(props) {
     return <div className="tooltiptext pvpTooltip">
@@ -36,7 +36,7 @@ class Dungeon extends Component {
                 <td>{this.props.data.score !== 0 ? this.msToTime(this.props.data.clear_time_ms) : "0:00:00"}</td>
                 <td>
                     {this.props.data.affixes.map(affix =>
-                        <div className="affix">
+                        <div key = {affix.name} className="affix">
                             <img className="affixImage" src={"affixes/"+ affix.name +".png"} alt =""/>
                             <Affix name={affix.name} description={affix.description} />
                         </div>
