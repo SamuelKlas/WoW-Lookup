@@ -1,5 +1,5 @@
 import React from 'react'
-import './pvpItem.css'
+import './styles.css'
 
 const PopupContent = (props) => (
     <div className="tooltiptext">

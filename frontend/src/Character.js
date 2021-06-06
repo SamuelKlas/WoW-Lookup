@@ -5,7 +5,7 @@ import TalentSection from "./TalentSection";
 import SoulbindSection from "./SoulbindSection";
 import RaidSection from "./RaidSection";
 import EquipSection from "./EquipSection"
-import './pvpItem.css'
+import './styles.css'
 import DungeonSection from "./DungeonSection";
 import "./loader.css"
 import Loader from "./Loader"
@@ -35,8 +35,6 @@ export default class Character extends React.Component{
             level : summaryData.level,
             race : summaryData.race.name
         }
-        console.log(summaryData)
-        console.log(filteredData)
         return filteredData
 
 }
@@ -95,25 +93,35 @@ export default class Character extends React.Component{
 
     }
     fetchData = async () =>{
-        this.setState({loaded:false})
-        let [summaryData,filteredData, equipData,talentData,soulBindData,raidData,dungeonData,mediaData]
-            = await Promise.all(
-            [this.fetchSummaryData(),this.fetchPvpData(), this.fetchEquipmentData(), this.fetchTalentData(),
-                this.fetchSoulbindData(),
-                this.fetchRaidData(),this.fetchMythicPlusData(),this.fetchCharacterMedia()]);
-        this.setState({
-                summaryData : summaryData,
-                pvpData : filteredData,
-                talentData :talentData,
-                soulBindData : soulBindData,
-                raidData : raidData,
-                loaded : true,
-                equipData : equipData,
-                dungeonData : dungeonData,
-                mediaData : mediaData
+        this.setState({loaded:false,error:false})
+        try {
+            let [summaryData, filteredData, equipData, talentData, soulBindData, raidData, dungeonData, mediaData]
+                = await Promise.all(
+                    [this.fetchSummaryData(), this.fetchPvpData(), this.fetchEquipmentData(),
+                           this.fetchTalentData(), this.fetchSoulbindData(), this.fetchRaidData(),
+                           this.fetchMythicPlusData(), this.fetchCharacterMedia()
+                           ]);
+            this.setState({
+                    summaryData: summaryData,
+                    pvpData: filteredData,
+                    talentData: talentData,
+                    soulBindData: soulBindData,
+                    raidData: raidData,
+                    loaded: true,
+                    error : false,
+                    equipData: equipData,
+                    dungeonData: dungeonData,
+                    mediaData: mediaData
 
-            }
-        )
+                }
+            )
+        }catch(err){
+            this.setState({
+                loaded:true,
+                error : true,
+                errMessage : "The specified character does not exist"
+            })
+        }
     }
 
     async componentDidMount() {
@@ -165,17 +173,18 @@ export default class Character extends React.Component{
 
     fetchSoulbindData = async() =>{
         let soulbindData = await (await fetch(this.props.baseUrl + "/covenant")).json()
-        console.log(soulbindData)
         return soulbindData
     }
 
     render(){
-        if(this.state.loaded === false){
+         if(this.state.loaded === false){
             return <Loader/>
+         }
+        if(this.state.error){
+            return <p>{this.state.errMessage}</p>
         }
 
         return <div>
-            <button type="button" onClick={this.fetchCharacterMedia}>Fetch data</button>
             <Summary data = {this.state.summaryData} thumbnailUrl = {this.state.dungeonData.thumbnailUrl}
                      mainUrl = {this.state.mediaData.assets[2].value} covenant = {this.state.soulBindData.covenant} />
             <EquipSection equipData = {this.state.equipData} />

@@ -6,7 +6,6 @@ class Conduit extends Component {
         this.state = {
             yeet: "yeet"
         }
-        console.log(props)
     }
 
     componentDidMount() {

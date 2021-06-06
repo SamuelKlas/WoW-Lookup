@@ -1,7 +1,7 @@
 import React from 'react';
 import PvPBracket from "./PvPBracket";
 import "bootstrap/dist/css/bootstrap.css";
-import './pvpItem.css'
+import './styles.css'
 
 
 export default class PvPSection extends React.Component{
@@ -50,7 +50,7 @@ export default class PvPSection extends React.Component{
 
         return (
 
-            <div className="equip">
+            <section className="equip">
                 <h2>PvP Statistics</h2>
                 <div className="items pvpItems">
                     <PvPBracket imgUrl = {urls[0]} rating = {ratings[0]} statistics = {statistics[0]} name = '2v2'/>
@@ -58,7 +58,7 @@ export default class PvPSection extends React.Component{
                     <PvPBracket imgUrl = {urls[2]} rating = {ratings[2]} statistics = {statistics[2]} name = 'Rbg'/>
                 </div>
 
-            </div>
+            </section>
         )
 
     }
