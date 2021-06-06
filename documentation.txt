@@ -1,0 +1,21 @@
+The goal of this project was to learn the basics of React when writing web applications, and to
+use data from a foreign API, in this case the Blizzard WoW Profile API.
+
+The function of the site is to look up max level World of Warcraft characters and see relevant
+information about them.
+A character is identified by their name, the server they are populating, and the region the server
+is based in. Some characters
+that can be used for seeing the functionality are :
+Region - Server - Name
+eu - Drak'Thul - Adaldo
+eu - Drak'Thul - Moosebreeder
+eu - Drak'Thul - Bifteck
+us - Illidan - Tagzz
+us - Bleeding Hollow - Terza
+eu - Burning Legion - Alexblast
+eu - Drak'Thul - Payned
+eu - Outland - Trillethree
+
+The app is made up of a form component and a character component. The character consists of several
+components/sections, each of which offers information about a specific type of data, like the character's
+equipment or player vs player records.
