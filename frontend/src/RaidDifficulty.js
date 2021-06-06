@@ -4,10 +4,6 @@ import React, {Component} from 'react';
 
 class RaidDifficulty extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     getBossImages = () => {
         let bossNames = ["Shriekwing","Huntsman Altimor","Sun King's Salvation","Artificer Xy'mox",
         "Hungering Destroyer","Lady Inerva Darkvein","The Council of Blood","Sludgefist",
@@ -41,7 +37,7 @@ class RaidDifficulty extends Component {
             <div className="raidItems">
                 {
                 this.getBossImages().map(encounter =>
-                    <div className="raidItem">
+                    <div className="raidItem" key = {encounter.name}>
                         <img className={"raidImage " + encounter.style} src={"/raidBosses/" + encounter.name + ".jpg"} alt=""/>
                         <p>{encounter.name}</p>
                         <p>{encounter.timesKilled}</p>
