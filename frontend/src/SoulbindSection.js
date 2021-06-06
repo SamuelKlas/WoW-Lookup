@@ -1,13 +1,7 @@
 import React, {Component} from 'react';
 import SoulBind from "./SoulBind";
 import Conduit from "./Conduit";
-
-
-const ToolTip = (props) => {
-    return <div className="tooltiptext">
-        <p>{"Renown : " + props.renown}</p>
-    </div>
-}
+import "./colors.css"
 
 export default class SoulbindSection extends Component {
 
@@ -21,27 +15,31 @@ export default class SoulbindSection extends Component {
     render() {
 
         return (
-            <div className="equip">
+
+            <section className="equip" style={{backgroundImage :
+                    `url(/covenants/${this.props.covenant.replace(" ","")}.png),
+                     url(/covenants/${this.props.covenant.replace(" ","")}.png)`,
+                backgroundPosition: "right 0,left 0",
+                backgroundRepeat:"no-repeat",}}>
                 <h2>Covenant</h2>
                 <div>
-                    <img className="covenantText covenantImage"
-                         src={"/covenants/" + this.props.covenant + ".jpg"} alt=""/>
-                    <p className="covenantText">{this.props.soulbind}</p>
+                    <h5 className={this.props.covenant.replace(" ","").toLowerCase()}>{this.props.covenant}</h5>
+                    <h5 style={{margin:"10px"}} className={this.props.covenant.replace(" ","").toLowerCase()}>{this.props.soulbind}</h5>
                 </div>
                 <section className="soulbindWrapper">
                     <div className="items soulbind">
-                        {this.props.soulBindIds.map(soulId => <SoulBind soulBindId={soulId}/>)}
+                        {this.props.soulBindIds.map(soulId => <SoulBind key = {soulId} soulBindId={soulId}/>)}
                     </div>
 
                     <div className="items soulbind">
-                        {this.props.conduits.map(soulId => <Conduit conduitId={soulId.id}
-                                                                    itemLevel={soulId.itemLevel}/>)}
+                        {this.props.conduits.map(condId => <Conduit key = {condId.id} conduitId={condId.id}
+                                                                    itemLevel={condId.itemLevel}/>)}
                     </div>
 
                 </section>
 
 
-            </div>
+            </section>
         );
     }
 }
